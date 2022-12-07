@@ -1,28 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      {{ count }}
+      <button @click="increment()">Increase</button>
+    </div>
+    <div>
+      {{ getName }}
+      <input type="text" v-model="new_name" />
+      <button @click="setName(new_name)">Change name</button>
+    </div>
+    <div>
+      <SelectedTag />
+    </div>
+    <div>
+      <button @click="getAllProduct()">Click</button>
+      <div v-for="(product, index) in getProducts" :key="index">
+        {{(index + 1)}}. {{product.name}}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import SelectedTag from "./components/SelectedTag.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      new_name: "",
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    SelectedTag,
+  },
+  computed: {
+    ...mapGetters(["count", "getName", "getProducts"]),
+  },
+  methods: {
+    ...mapMutations(["increment", "setName"]),
+    ...mapActions(["getAllProduct"]),
+  },
+};
 </script>
 
-<style>
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  max-width: 50%;
+  position: relative;
 }
 </style>
